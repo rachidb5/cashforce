@@ -8,6 +8,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import './assets/main.css'
+import mdiVue from 'mdi-vue/v3'
+import * as mdijs from '@mdi/js'
 
 const vuetify = createVuetify({
     components,
@@ -18,4 +20,6 @@ const app = createApp(App)
 
 app.use(createPinia())
 
-createApp(App).use(vuetify).mount('#app')
+createApp(App).use(vuetify).use(mdiVue, {
+  icons: mdijs
+}).mount('#app')

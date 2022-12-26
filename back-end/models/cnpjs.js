@@ -25,16 +25,14 @@ module.exports = (sequelize, DataTypes) => {
       },
      cnpj: DataTypes.STRING,
      companyType: DataTypes.STRING,
-     date_created: DataTypes.DATE,
-     date_updated: DataTypes.DATE
+     createdAt: DataTypes.DATE,
+     updatedAt: DataTypes.DATE
     },
     {
       // options
       sequelize,
       modelName: 'Cnpjs',
       tableName: 'cnpjs',
-      createdAt: 'date_created',
-      updatedAt: 'date_updated',
       underscore: true,
     },
   );
