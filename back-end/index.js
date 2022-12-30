@@ -25,7 +25,7 @@ const corsOpts = {
   app.use(cors(corsOpts));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json())
 
 app.use(routes);
-app.listen(process.env.PORT, () => console.log(`ouvindo porta ${process.env.PORT}!`));
+app.listen(process.env.PORT || 8080, () => console.log(`ouvindo porta ${process.env.PORT || 8080}!`));
