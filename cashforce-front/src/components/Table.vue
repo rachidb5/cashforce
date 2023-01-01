@@ -28,20 +28,83 @@
             <td>{{ i.buyers.name }}</td>
             <td>{{ i.providers.name }}</td>
             <td>{{ dateFormat(i.createdAt) }}</td>
-            <td class="green-text">R$ {{ (i.value/100).toFixed(2).toString().replace('.',',') }}</td>
+            <td class="green-text">
+              R$ {{ (i.value / 100).toFixed(2).toString().replace(".", ",") }}
+            </td>
             <td class="green-text">{{ statusDefine(i.orderStatusBuyer) }}</td>
             <td>
-              <button elevation="2">Dados do cedente</button>
+              <button elevation="2" @click="openModal(i.providerId)">
+                Dados do cedente
+              </button>
             </td>
           </tr>
         </tbody>
       </v-table>
     </div>
+    <v-row justify="center">
+      <v-dialog v-model="dialog" persistent max-width="690">
+        <template v-slot:activator="{ on, attrs }"> </template>
+        <v-card>
+          <v-spacer></v-spacer>
+          <v-row justify="space-between">
+            <v-column>
+              <span>Nome</span>
+              <span>{{ provider.name }}</span>
+            </v-column>
+            <v-column>
+              <span>Trading name</span>
+              <span>{{ provider.tradingName }}</span>
+            </v-column>
+            <v-column>
+              <span>Nome</span>
+              <span>{{ provider.name }}</span>
+            </v-column>
+          </v-row>
+          <v-row justify="space-between">
+            <v-column>
+              <span>Nome</span>
+              <span>{{ provider.name }}</span>
+            </v-column>
+            <v-column>
+              <span>Trading name</span>
+              <span>{{ provider.tradingName }}</span>
+            </v-column>
+            <v-column>
+              <span>Nome</span>
+              <span>{{ provider.name }}</span>
+            </v-column>
+          </v-row>
+          <v-row justify="space-between">
+            <v-column>
+              <span>Nome</span>
+              <span>{{ provider.name }}</span>
+            </v-column>
+            <v-column>
+              <span>Trading name</span>
+              <span>{{ provider.tradingName }}</span>
+            </v-column>
+            <v-column>
+              <span>Nome</span>
+              <span>{{ provider.name }}</span>
+            </v-column>
+          </v-row>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="dialog = false">
+              Fechar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
   </div>
 </template>
 <style scoped>
 .v-table .v-table__wrapper > table > thead > tr:last-child > th {
   border-bottom: none;
+}
+.v-card{
+  padding: 1rem;
 }
 .green-text {
   color: #00ad8c;
@@ -114,11 +177,12 @@ span {
 </style>
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
       list: [],
+      dialog: false,
+      provider:{}
     };
   },
   methods: {
@@ -151,6 +215,16 @@ export default {
       ];
       return statusList[s];
     },
+    async openModal(id){
+      this.dialog = true
+      await axios
+        .get(`http://cashforce-back.fly.dev/provider/${id}`)
+        .then((response) => {
+          console.log(response.data);
+          this.provider = response.data
+        })
+        .catch((e) => console.log(e.response));
+    }
   },
   beforeMount() {
     this.getList();
