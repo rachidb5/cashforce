@@ -188,7 +188,7 @@ export default {
   methods: {
     async getList() {
       await axios
-        .get("http://cashforce-back.fly.dev/orders")
+        .get("https://cashforce-back.fly.dev/orders")
         .then((response) => {
           this.list = response.data;
           console.log(response.data);
@@ -218,7 +218,7 @@ export default {
     async openModal(id){
       this.dialog = true
       await axios
-        .get(`http://cashforce-back.fly.dev/provider/${id}`)
+        .get(`https://cashforce-back.fly.dev/provider/${id}`)
         .then((response) => {
           console.log(response.data);
           this.provider = response.data
