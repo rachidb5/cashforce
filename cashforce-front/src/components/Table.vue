@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="i in list">
+        <tr v-for="i in orders">
           <td>{{ i.orderNfId }}</td>
           <td>{{ i.buyers.name }}</td>
           <td>{{ i.providers.name }}</td>
@@ -30,89 +30,84 @@
           </td>
           <td class="green-text">{{ statusList[i.orderStatusBuyer] }}</td>
           <td>
-            <button elevation="2" @click="openModal(i.providerId)">
+            <button>
               Dados do cedente
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <v-row justify="center">
-      <v-dialog v-model="dialog" persistent max-width="690">
-        <template v-slot:activator="{ on, attrs }"> </template>
-        <v-card>
-          <v-spacer></v-spacer>
-          <v-row justify="space-between">
-            <v-column>
-              <span>Nome</span>
-              <span>{{ provider.name }}</span>
-            </v-column>
-            <v-column>
-              <span>Trading name</span>
-              <span>{{ provider.tradingName }}</span>
-            </v-column>
-            <v-column>
-              <span>Nome</span>
-              <span>{{ provider.name }}</span>
-            </v-column>
-          </v-row>
-          <v-row justify="space-between">
-            <v-column>
-              <span>Nome</span>
-              <span>{{ provider.name }}</span>
-            </v-column>
-            <v-column>
-              <span>Trading name</span>
-              <span>{{ provider.tradingName }}</span>
-            </v-column>
-            <v-column>
-              <span>Nome</span>
-              <span>{{ provider.name }}</span>
-            </v-column>
-          </v-row>
-          <v-row justify="space-between">
-            <v-column>
-              <span>Nome</span>
-              <span>{{ provider.name }}</span>
-            </v-column>
-            <v-column>
-              <span>Trading name</span>
-              <span>{{ provider.tradingName }}</span>
-            </v-column>
-            <v-column>
-              <span>Nome</span>
-              <span>{{ provider.name }}</span>
-            </v-column>
-          </v-row>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="green darken-1" text @click="dialog = false">
-              Fechar
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
   </div>
 </template>
+<script>
+import axios from "axios";
+import { mapActions } from 'vuex'
+
+export default {
+  computed: {
+    orders() {
+      return this.$store.state.orders;
+    },
+    provider() {
+      return this.$store.state.provider;
+    },
+  },
+  data() {
+    return {
+      list: [],
+      dialog: false,
+      provider: {},
+      statusList: [
+        "Pendente de confirmação",
+        "Pedido confirmado",
+        "Não reconhece o pedido",
+        "Mercadoria não recebida",
+        "Recebida com avaria",
+        "Devolvida",
+        "Recebida com devolução parcial",
+        "Recebida e confirmada",
+        "Pagamento Autorizado",
+      ],
+    };
+  },
+  methods: {
+    ...mapActions([
+      'getList',
+      'getProvider'
+    ]),
+    dateFormat(date) {
+      return (
+        date.slice(8, 10) + "/" + date.slice(5, 7) + "/" + date.slice(0, 4)
+      );
+    },
+  },
+  beforeMount() {
+    this.getList();
+  },
+};
+</script>
+
 <style scoped>
+.close-btn {
+  padding: 0.5rem 1rem !important;
+}
 table {
   border-collapse: separate !important;
   border-spacing: 0 1rem;
 }
 td {
-  padding: .5rem;
+  padding: 0.5rem;
   font-size: 12px !important;
   text-align: center;
   border-top: 1px solid #dfe2eb;
   border-bottom: 1px solid #dfe2eb;
 }
 td:first-of-type {
-  border-radius: .5rem 0 0 .5rem;
+  border-radius: 0.5rem 0 0 0.5rem;
   border-left: 1px solid #dfe2eb;
 }
 td:last-of-type {
-  border-radius: 0 .5rem .5rem 0;
+  border-radius: 0 0.5rem 0.5rem 0;
   border-right: 1px solid #dfe2eb;
 }
 .v-card {
@@ -168,56 +163,3 @@ span {
   font-weight: 300;
 }
 </style>
-<script>
-import axios from "axios";
-export default {
-  data() {
-    return {
-      list: [],
-      dialog: false,
-      provider: {},
-      statusList: [
-        "Pendente de confirmação",
-        "Pedido confirmado",
-        "Não reconhece o pedido",
-        "Mercadoria não recebida",
-        "Recebida com avaria",
-        "Devolvida",
-        "Recebida com devolução parcial",
-        "Recebida e confirmada",
-        "Pagamento Autorizado",
-      ],
-    };
-  },
-  methods: {
-    async getList() {
-      await axios
-        .get("https://cashforce-back.fly.dev/orders")
-        .then((response) => {
-          this.list = response.data;
-          console.log(response.data);
-          console.log(this.list);
-        })
-        .catch((e) => console.log(e.response));
-    },
-    dateFormat(date) {
-      return (
-        date.slice(8, 10) + "/" + date.slice(5, 7) + "/" + date.slice(0, 4)
-      );
-    },
-    async openModal(id) {
-      this.dialog = true;
-      await axios
-        .get(`https://cashforce-back.fly.dev/provider/${id}`)
-        .then((response) => {
-          console.log(response.data);
-          this.provider = response.data;
-        })
-        .catch((e) => console.log(e.response));
-    },
-  },
-  beforeMount() {
-    this.getList();
-  },
-};
-</script>
