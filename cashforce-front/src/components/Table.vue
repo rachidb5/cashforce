@@ -16,7 +16,7 @@
           <th class="text-left">EMISSÃO</th>
           <th class="text-left">VALOR</th>
           <th class="text-left">STATUS</th>
-          <th class="text-left">AÇÕES</th>
+          <th class="text-left"></th>
         </tr>
       </thead>
       <tbody>
