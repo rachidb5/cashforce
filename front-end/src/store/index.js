@@ -11,7 +11,7 @@ export default createStore({
         async getList({ commit }) {
             console.log('test')
             try{
-               const data = await axios.get("https://cashforce-back.fly.dev/orders")
+               const data = await axios.get("http://localhost:3000/orders")
                commit("SET_ORDERS", data.data);
             } catch(e){
                 console.log(e)
