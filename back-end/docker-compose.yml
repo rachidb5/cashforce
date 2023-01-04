@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3'
 services:
   mysql:
     image: mysql:8.0.21
@@ -6,5 +6,5 @@ services:
     ports:
       - 3306:3306
     environment:
-      - DB_PWD=root
+      - MYSQL_ROOT_PASSWORD=root
     restart: 'always'
