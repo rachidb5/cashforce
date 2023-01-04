@@ -2,10 +2,10 @@ require('dotenv').config();
 
 module.exports = {
     development: {
-        username: 'freedb_rachidroot',
-        password: 'n96r9Z@CSz2@#bW',
-        database: 'freedb_cashforce',
-        host: 'sql.freedb.tech',
+        username: 'root',
+        password: '123321',
+        database: 'cashforce',
+        host: '127.0.0.1',
         port: 3306,
         dialect: 'mysql',
         logging: true
